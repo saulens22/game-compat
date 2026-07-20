@@ -1,0 +1,3 @@
+# Mortal Kombat 11 currently needs no game-specific host packages.
+# selectors: mk11 mortal-kombat-11
+# Its Vulkan, NVIDIA, and window diagnostic tools are shared globally.

@@ -1,0 +1,6 @@
+{
+  "current": "v1",
+  "history": [
+    {"version": "v1", "summary": "Initial reproducible diagnostic scripts and documented unresolved 15 FPS result."}
+  ]
+}

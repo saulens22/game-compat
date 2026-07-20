@@ -1,0 +1,10 @@
+# GTA Vice City-specific distro-neutral capabilities.
+# selectors: vc grand-theft-auto-vice-city
+
+# Media framework and codecs used to inspect/test the original intro playback.
+gstreamer-tools
+gstreamer-plugins-base
+gstreamer-plugins-good
+gstreamer-plugins-bad
+gstreamer-plugins-ugly
+gstreamer-libav

@@ -1,0 +1,37 @@
+# Shared, distro-neutral capabilities used across game compatibility cases.
+# The installer maps each name to Arch, Ubuntu/Debian, or Fedora packages.
+
+# Downloads pinned mod archives from upstream HTTPS release URLs.
+curl
+
+# Extracts and integrity-tests pinned ZIP archives.
+unzip
+
+# Native Python GUI toolkit used by the optional beginner launcher.
+python-tk
+
+# Creates the ignored virtual environment used by local Python helpers.
+python-venv
+
+
+# KWin-native window discovery and activation on KDE Wayland.
+# Optional on distributions that package it; XWayland fallback remains available.
+kdotool
+
+# XWayland fallback window discovery for Wine surfaces.
+xdotool
+
+# Records properties exposed by Wine XWayland windows.
+xprop
+
+# Captures a selected X11/XWayland window by ID.
+imagemagick
+
+# Captures screenshots and regions under KDE Wayland.
+spectacle
+
+# Inspects Vulkan devices, drivers, and capabilities.
+vulkan-tools
+
+# NVIDIA telemetry (`nvidia-smi`) comes from the installed driver utilities;
+# package names are driver-version-specific on several distributions.

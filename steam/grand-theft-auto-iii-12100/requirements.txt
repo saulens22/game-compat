@@ -1,0 +1,19 @@
+# GTA III-specific distro-neutral capabilities.
+# selectors: gta3 grand-theft-auto-iii
+
+# Identifies and verifies the original MPEG intro files.
+ffmpeg
+
+# Plays the original intros through the native Wayland media path.
+mpv
+
+# Compiles the reproducible controller-to-intro-skip bridge.
+c-compiler
+
+# Media framework and codecs used to inspect/test Proton media playback.
+gstreamer-tools
+gstreamer-plugins-base
+gstreamer-plugins-good
+gstreamer-plugins-bad
+gstreamer-plugins-ugly
+gstreamer-libav

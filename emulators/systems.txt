@@ -1,0 +1,27 @@
+# system       route
+# First field is the stable lowercase directory name. The second documents the
+# expected frontend route; setup scripts intentionally use only the first field.
+arcade          unconfigured
+atari2600       unconfigured
+3ds             retroarch-managed-experimental
+dreamcast       unconfigured
+gamecube        standalone
+gb              retroarch-managed
+gba             retroarch-managed
+gbc             retroarch-managed
+n64             unconfigured
+nds             unconfigured
+nes             retroarch-managed
+ps1             retroarch-managed
+ps2             standalone
+ps3             standalone
+ps4             standalone-experimental
+ps5             standalone-experimental
+psp             unconfigured
+saturn          unconfigured
+snes            retroarch-managed
+switch          standalone
+wii             standalone
+wiiu            standalone
+xbox            standalone
+xbox360         standalone

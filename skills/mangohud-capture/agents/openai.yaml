@@ -1,0 +1,4 @@
+interface:
+  display_name: "MangoHud Capture"
+  short_description: "Capture and validate per-game MangoHud logs"
+  default_prompt: "Use $mangohud-capture to configure a bounded MangoHud logging run for this game."

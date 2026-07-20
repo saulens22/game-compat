@@ -1,0 +1,7 @@
+{
+  "current": "v1",
+  "history": [
+    {"version": "v0", "summary": "Active research placeholder; no published fix yet."},
+    {"version": "v1", "summary": "Adds pinned EaglePatch XInput fixes, 4x MSAA at 4K, motion-blur removal, and a hidden 60 FPS OpenGL cap."}
+  ]
+}

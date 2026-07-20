@@ -1,0 +1,2 @@
+# selectors: acfc freedom-cry assassins-creed-freedom-cry-277590 steam/assassins-creed-freedom-cry-277590
+# No additional host packages are required by the v1 profile.

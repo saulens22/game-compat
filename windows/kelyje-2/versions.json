@@ -1,0 +1,6 @@
+{
+  "current": "v1",
+  "history": [
+    {"version": "v1", "summary": "Initial Bottles setup for Lithuanian 7.3 with Indeo, D2GI, Windows XP mode, self-contained no-CD paths, verification and rollback."}
+  ]
+}

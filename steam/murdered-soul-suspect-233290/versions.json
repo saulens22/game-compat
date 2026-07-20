@@ -1,0 +1,9 @@
+{
+  "current": "v4",
+  "history": [
+    {"version": "v1", "summary": "Adds a guarded two-byte repair and complete three-file rollback for the cross-platform Near Gas Station receipt bug."},
+    {"version": "v2", "summary": "Refuses the repair unless Crash, B-RAD, and Scotch each exist exactly once and are already found and reviewed."},
+    {"version": "v3", "summary": "Marks the stuck receipt complete but resets B-RAD, allowing the player to recollect B-RAD and trigger the normal 3/4 to 4/4 transition in game."},
+    {"version": "v4", "summary": "Also transfers the three-badge completion value to the receipt and clears B-RAD's badges, producing a structurally consistent completed receipt and fully uncollected B-RAD."}
+  ]
+}

@@ -1,0 +1,4 @@
+# Download and archive handling for current official Libretro cores.
+curl
+unzip
+file

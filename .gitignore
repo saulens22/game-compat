@@ -1,0 +1,35 @@
+# Per-machine diagnostics and captures.
+.env
+_work/
+**/logs/
+**/evidence/*
+!**/evidence/README.md
+**/experiments.tsv
+
+# Live configuration/save snapshots may contain account and machine data.
+**/configs/
+
+# Generated binaries, locks, cloned source trees, and isolated Proton prefixes.
+**/runtime/
+**/source/
+**/prefixes/
+
+# Re-download these from the pinned URLs/checksums in installer scripts.
+**/tool-downloads/
+
+# Locally captured third-party/community material.
+**/protondb.txt
+
+# Common transient files.
+__pycache__/
+*.pyc
+_pages-src/
+_pages-mkdocs.yml
+_site/
+*.log
+*.out
+*.png
+*.jpg
+*.jpeg
+*.core
+core

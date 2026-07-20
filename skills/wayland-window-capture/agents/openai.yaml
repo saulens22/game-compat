@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wayland Window Capture"
+  short_description: "Capture specific game windows and metadata"
+  default_prompt: "Use $wayland-window-capture to capture the relevant game or Wine window and its properties."

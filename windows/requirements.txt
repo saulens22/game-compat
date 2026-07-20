@@ -1,0 +1,14 @@
+# Shared distro-neutral capabilities for non-Steam Windows/Wine games.
+# selectors: windows windows-general
+
+# Converts straightforward Nero data-disc images to ISO. Preserve the original
+# NRG because conversion can discard mixed-mode or Nero-specific information.
+nrg2iso
+
+# Provides `isoinfo` for read-only ISO-9660 inspection after conversion.
+iso-info
+
+# CDEmu is intentionally not installed by this manifest. Its VHBA dependency is
+# kernel-coupled and must never be selected by the generic package installer.
+# Use conversion/inspection first. A case that genuinely requires optical-drive
+# emulation must document a kernel-specific, explicitly reviewed manual setup.

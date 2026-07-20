@@ -1,0 +1,5 @@
+# selectors: ac1 assassins-creed-15100 steam/assassins-creed-15100
+curl             # Downloads pinned EaglePatch and Ultimate ASI Loader releases.
+unzip            # Extracts both official release archives.
+mangohud         # Provides a display-independent 60 FPS cap for the OpenGL path.
+mangohud-32bit   # AC1 is 32-bit; the 64-bit MangoHud package alone cannot hook it.

@@ -1,0 +1,38 @@
+site_name: Game Compatibility Catalog
+site_description: Reproducible Linux game compatibility setups and final results
+site_url: https://saulens22.github.io/game-compat/
+repo_url: https://github.com/saulens22/game-compat
+repo_name: saulens22/game-compat
+edit_uri: edit/main/
+docs_dir: _pages-src
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+  palette:
+    scheme: slate
+    primary: blue grey
+    accent: cyan
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+copyright: Primarily AI-created under human direction; independently review before use.

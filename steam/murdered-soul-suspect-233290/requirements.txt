@@ -1,0 +1,2 @@
+# selectors: murdered soul-suspect murdered-soul-suspect-233290 steam/murdered-soul-suspect-233290
+# No additional host packages are required for the v1 save-state repair.

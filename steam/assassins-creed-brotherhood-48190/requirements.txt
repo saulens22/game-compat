@@ -1,0 +1,3 @@
+# selectors: acb brotherhood assassins-creed-brotherhood-48190 steam/assassins-creed-brotherhood-48190
+# Hidden, reliable 60 FPS limiter; avoids Brotherhood bugs above 60 FPS.
+mangohud

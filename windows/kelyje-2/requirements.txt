@@ -1,0 +1,8 @@
+# Kelyje II-specific distro-neutral capabilities.
+# selectors: kelyje2 kelyje-2
+
+# Extracts the verified source file directly without mounting it.
+libarchive
+
+# Checks the installed configuration and registry mappings.
+ripgrep

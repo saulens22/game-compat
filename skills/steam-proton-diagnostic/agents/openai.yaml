@@ -1,0 +1,4 @@
+interface:
+  display_name: "Steam Proton Diagnostic"
+  short_description: "Run bounded Steam and Proton diagnostics"
+  default_prompt: "Use $steam-proton-diagnostic to investigate this Steam game with one controlled variable."

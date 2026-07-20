@@ -1,0 +1,6 @@
+{
+  "current": "v1",
+  "history": [
+    {"version": "v1", "summary": "Adds native Xbox input, maximum graphics without motion blur, save-directory repair, and a verified hidden 60 FPS cap."}
+  ]
+}

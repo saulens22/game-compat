@@ -1,0 +1,6 @@
+[
+  {"name": "RetroArch on Steam", "url": "https://store.steampowered.com/app/1118310/RetroArch/"},
+  {"name": "Libretro documentation", "url": "https://docs.libretro.com/"},
+  {"name": "Libretro nightly buildbot", "url": "https://buildbot.libretro.com/nightly/linux/x86_64/latest/"},
+  {"name": "Azahar 3DS emulator", "url": "https://github.com/azahar-emu/azahar"}
+]

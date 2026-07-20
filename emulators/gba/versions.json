@@ -1,0 +1,7 @@
+{
+  "current": "v2",
+  "history": [
+    {"version": "v1", "summary": "Verified Linux patching and Steam RetroArch launch for Radical Red 4.1."},
+    {"version": "v2", "summary": "Flattens GBA research and helpers into the system folder instead of using a per-game subdirectory."}
+  ]
+}

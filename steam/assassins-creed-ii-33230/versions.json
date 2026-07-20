@@ -1,0 +1,6 @@
+{
+  "current": "v1",
+  "history": [
+    {"version": "v1", "summary": "Adds pinned EaglePatch XInput fixes, 4096 shadows, 8x MSAA at 4K, and a stable draw-distance profile."}
+  ]
+}

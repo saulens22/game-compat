@@ -1,0 +1,9 @@
+{
+  "current": "v4",
+  "history": [
+    {"version": "v1", "summary": "Initial Steam Runtime, controller, external library, and current official core setup."},
+    {"version": "v2", "summary": "Adds verified mGBA Xbox label mapping, controller menu, left-stick movement, separate shoulder and trigger actions, rewind, and immediate capped 4x fast-forward."},
+    {"version": "v3", "summary": "Creates system directories from a versioned catalog, including reserved standalone and experimental platforms such as Switch and PS5."},
+    {"version": "v4", "summary": "Moves the Steam-distributed RetroArch frontend out of the Steam game hierarchy and consumes the shared emulator system catalog."}
+  ]
+}

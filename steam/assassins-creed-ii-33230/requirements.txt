@@ -1,0 +1,3 @@
+# selectors: ac2 assassins-creed-ii-33230 steam/assassins-creed-ii-33230
+curl   # Downloads pinned EaglePatch and Ultimate ASI Loader releases.
+unzip  # Extracts both official release archives.

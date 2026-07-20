@@ -1,0 +1,6 @@
+[
+  {"name": "Proton-GE", "url": "https://github.com/GloriousEggroll/proton-ge-custom"},
+  {"name": "Valve Proton", "url": "https://github.com/ValveSoftware/Proton"},
+  {"name": "MangoHud", "url": "https://github.com/flightlessmango/MangoHud"},
+  {"name": "vkd3d-proton", "url": "https://github.com/HansKristian-Work/vkd3d-proton"}
+]
