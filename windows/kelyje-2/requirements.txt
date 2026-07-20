@@ -1,8 +1,12 @@
 # Kelyje II-specific distro-neutral capabilities.
 # selectors: kelyje2 kelyje-2
 
-# Extracts the verified source file directly without mounting it.
-libarchive
-
 # Checks the installed configuration and registry mappings.
 ripgrep
+
+# Prepares Steam's grid, portrait, hero, logo and shortcut icon from pinned
+# official assets for the same underlying game.
+imagemagick
+
+# setup-bottle.sh installs the icodecs verb with Winetricks bundled by Bottles
+# Flatpak; no host Winetricks package is required.

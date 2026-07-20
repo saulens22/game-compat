@@ -15,7 +15,8 @@ from pathlib import Path
 DOWNLOAD_SUFFIXES = {".sh", ".py", ".c", ".conf"}
 
 HELP = {
-    "setup-steam.sh": ("Recommended complete setup", "Installs this case's fixes and configures its Steam launch options."),
+    "setup-steam.sh": ("Configure Steam launch", "Adds or updates this case's documented Steam integration; read the case page to see whether Steam is optional."),
+    "prepare-steam-launch.sh": ("Prepare a direct Steam launch", "Resets display-dependent settings immediately before Steam Proton starts the game."),
     "setup-bottle.sh": ("Create the isolated bottle", "Verifies the source file and creates the complete one-game Bottles installation."),
     "configure-fixes.sh": ("Configure the compatibility fixes", "Applies the verified self-contained paths, codec preference and Windows compatibility identity."),
     "install-d2gi.sh": ("Install D2GI", "Downloads the pinned D2GI release, verifies its checksum and installs the modern DirectDraw wrapper."),
@@ -48,14 +49,17 @@ BUNDLE_SHARED = {
     "TESTED_ENVIRONMENT.md",
     "USAGE.md",
     ".env.example",
+    "add-bottles-steam-shortcut.sh",
     "add-steam-shortcut.py",
     "bottles-game.sh",
+    "bottles-winetricks.sh",
     "game-compat-launcher.py",
     "install-system-packages.sh",
     "launch-gui.sh",
     "requirements-global.txt",
     "python-requirements.txt",
     "run-python-tool.sh",
+    "remove-steam-compat-tool.sh",
     "set-steam-compat-tool.sh",
     "set-steam-launch-options.sh",
     "lib/steam-paths.sh",
@@ -67,7 +71,9 @@ BUNDLE_SHARED = {
 }
 
 SHARED_HELP = {
+    "add-bottles-steam-shortcut.sh": "Optionally creates one direct Steam shortcut for a verified win64 Bottles prefix, preserving required launch options and warning about shared-prefix risk.",
     "add-steam-shortcut.py": "Safely backs up and manages native non-Steam shortcuts while protecting Steam's live shortcut database.",
+    "bottles-winetricks.sh": "Installs verified dependencies through Bottles' bundled Winetricks and the bottle's selected runner.",
     "run-python-tool.sh": "Creates an ignored pinned Python virtual environment and runs repository Python helpers inside it.",
     "bottles-game.sh": "Creates, inspects, registers, and launches one isolated Bottles environment per non-Steam Windows game without managing host packages.",
     "launch-gui.sh": "Starts the native graphical helper and offers to install Python Tk when it is missing.",
@@ -75,6 +81,7 @@ SHARED_HELP = {
     "install-system-packages.sh": "Installs the documented host packages for all games or for a selected game on Arch, Debian/Ubuntu, or Fedora.",
     "setup-gta-classic-trilogy.sh": "Runs the complete maintained setup for GTA III, Vice City, and San Andreas.",
     "set-steam-client-channel.sh": "Safely selects a Steam client channel while preserving a backup of the previous configuration.",
+    "remove-steam-compat-tool.sh": "Removes obsolete non-Steam compatibility mappings while Steam is stopped, with backup and verification.",
     "set-steam-compat-tool.sh": "Selects a compatibility tool for one Steam App ID with backup and verification.",
     "set-steam-launch-options.sh": "Writes the complete launch-options line for one Steam App ID with backup and verification.",
     "experiment-guard.sh": "Prevents an identical game experiment from being repeated without a changed condition.",

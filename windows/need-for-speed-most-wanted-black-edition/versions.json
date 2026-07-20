@@ -1,0 +1,33 @@
+{
+  "current": "v7",
+  "history": [
+    {
+      "version": "v1",
+      "summary": "Dedicated Bottles setup with current Widescreen Fix, display-independent resolution, GE-Proton 11-1 NT sync configuration, native DirectX 9 repair, verification, rollback and Steam shortcut support."
+    },
+    {
+      "version": "v2",
+      "summary": "Adds checksum-verified Steam library artwork and documents the confirmed Steam Overlay limitation for Flatpak non-Steam games; ineffective preload forwarding is not retained."
+    },
+    {
+      "version": "v3",
+      "summary": "Defaults new NFSMW bottles to win64 and installs d3dx9 plus d3dcompiler_47 freshly through Bottles Winetricks; existing bottles are never converted automatically."
+    },
+    {
+      "version": "v4",
+      "summary": "Promotes the player-confirmed working win64 GE-Proton bottle to the canonical NFSMW default, rejects an existing bottle with the wrong architecture, and verifies win64 explicitly."
+    },
+    {
+      "version": "v5",
+      "summary": "Makes the public installation path explicitly create win64 from the start; no win32 precursor, conversion, or migration is required or supported."
+    },
+    {
+      "version": "v6",
+      "summary": "Adds optional player-confirmed direct Steam integration with one canonical shortcut, Overlay, FPS counter, complete artwork and display-independent pre-launch preparation; shared-prefix risk is documented."
+    },
+    {
+      "version": "v7",
+      "summary": "Initializes required Proton bookkeeping without copying dependencies, preventing first-launch tracked-files failures while continuing to share the canonical Bottles prefix."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# Need for Speed: Most Wanted Black Edition case tools.
+# selectors: nfsmw need-for-speed-most-wanted-black-edition
+
+# Verifies configuration and registry state.
+ripgrep
+
+# Extracts the pinned Widescreen Fix release archive.
+libarchive
+
+# Builds Steam's portrait, grid, hero, logo and icon images from the pinned
+# cover selected for this non-Steam shortcut.
+imagemagick
+
+# The setup installs the d3dx9 verb with Winetricks bundled by Bottles Flatpak;
+# no host Winetricks package is required.

@@ -1,6 +1,9 @@
 {
-  "current": "v1",
+  "current": "v4",
   "history": [
-    {"version": "v1", "summary": "Initial Bottles setup for Lithuanian 7.3 with Indeo, D2GI, Windows XP mode, self-contained no-CD paths, verification and rollback."}
+    {"version": "v1", "summary": "Initial Bottles setup for Lithuanian 7.3 with Indeo, D2GI, Windows XP mode, self-contained no-CD paths, verification and rollback."},
+    {"version": "v2", "summary": "Separates installation from fix automation; scripts no longer accept, copy, extract, or archive installation files."},
+    {"version": "v3", "summary": "Uses a win64 GE-Proton bottle, verifies interactive Ligos Indeo 5.11 installation, and adds optional direct Steam integration with working D2GI widescreen, Overlay, FPS counter and complete artwork."},
+    {"version": "v4", "summary": "Initializes Proton bookkeeping safely for the optional shared-prefix Steam path and adds clearly labeled historical, compatibility-guide and fix-project links."}
   ]
 }

@@ -15,6 +15,7 @@ Usage:
   bottles-game.sh programs BOTTLE
   bottles-game.sh run BOTTLE PROGRAM_NAME [ARG...]
   bottles-game.sh run-exe BOTTLE WINDOWS_EXE [ARG...]
+  bottles-game.sh stop BOTTLE [--yes]
 
 Reusable Bottles-only management for non-Steam Windows cases. One case should
 use one stable lowercase bottle name. This tool never creates a raw Wine prefix,
@@ -40,22 +41,17 @@ active_bottle_pids() {
     local path=$1 proc env
     for proc in /proc/[0-9]*; do
         [[ -r $proc/environ ]] || continue
-        env=$(tr '\0' '\n' <"$proc/environ" 2>/dev/null || true)
+        env=$( (tr '\0' '\n' <"$proc/environ") 2>/dev/null || true)
         if grep -Fqx "WINEPREFIX=$path" <<<"$env"; then
             printf '%s\n' "${proc##*/}"
         fi
     done
 }
 
-if flatpak info com.usebottles.bottles >/dev/null 2>&1; then
-    cli=(flatpak run --command=bottles-cli com.usebottles.bottles)
-    backend=flatpak
-elif command -v bottles-cli >/dev/null; then
-    cli=(bottles-cli)
-    backend=native
-else
-    die 'Bottles is not installed. Install and initialize Bottles before managing a game.'
-fi
+flatpak info com.usebottles.bottles >/dev/null 2>&1 ||
+    die 'The officially supported Bottles Flatpak (com.usebottles.bottles) is not installed or initialized.'
+cli=(flatpak run --command=bottles-cli com.usebottles.bottles)
+backend=flatpak
 
 command=${1:-}
 [[ -n $command ]] || { usage; exit 2; }
@@ -109,12 +105,15 @@ case $command in
         ;;
     ensure)
         [[ $# -ge 1 && $# -le 3 ]] || { usage >&2; exit 2; }
-        bottle=$1; arch=${2:-win32}; environment=${3:-gaming}
+        bottle=$1; arch=${2:-win64}; environment=${3:-gaming}
         valid_bottle "$bottle"
         [[ $arch == win32 || $arch == win64 ]] || die "Unsupported architecture: $arch"
         [[ $environment == gaming || $environment == application || $environment == custom ]] || die "Unsupported environment: $environment"
         root=$("${cli[@]}" info bottles-path)
         if [[ -f $root/$bottle/bottle.yml ]]; then
+            configured_arch=$(sed -n 's/^Arch: //p' "$root/$bottle/bottle.yml" | head -n 1)
+            [[ $configured_arch == "$arch" ]] || die \
+                "Bottle $bottle already exists as ${configured_arch:-an unknown architecture}; requested $arch. Bottle architectures cannot be converted in place."
             echo "Bottle already exists: $bottle"
         else
             "${cli[@]}" new --bottle-name "$bottle" --environment "$environment" --arch "$arch"
@@ -146,6 +145,22 @@ case $command in
         bottle=$1; exe=$2; shift 2
         valid_bottle "$bottle"
         "${cli[@]}" run -b "$bottle" -e "$exe" --args-replace "$@"
+        ;;
+    stop)
+        [[ $# -ge 1 && $# -le 2 ]] || { usage >&2; exit 2; }
+        bottle=$1
+        yes=0
+        if [[ ${2:-} == --yes ]]; then yes=1
+        elif [[ $# -eq 2 ]]; then usage >&2; exit 2
+        fi
+        require_bottle "$bottle" >/dev/null
+        echo "WARNING: this stops every Wine process in bottle $bottle." >&2
+        echo 'Unsaved game data may be lost. Other bottles and Steam are not stopped.' >&2
+        if (( ! yes )); then
+            read -r -p 'Stop this bottle through Wine now? [y/N] ' answer
+            [[ $answer == [yY] ]] || exit 0
+        fi
+        "${cli[@]}" shell -b "$bottle" -i 'wineboot -k /nogui'
         ;;
     -h|--help|help) usage ;;
     *) echo "Unknown command: $command" >&2; usage >&2; exit 2 ;;

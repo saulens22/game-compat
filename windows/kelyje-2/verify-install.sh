@@ -10,17 +10,20 @@ check_file() {
 }
 
 check_file "$bottle/bottle.yml" 'dedicated Bottles bottle exists'
+if rg -q '^Arch: win64$' "$bottle/bottle.yml" && rg -q '^Runner: ge-proton11-1$' "$bottle/bottle.yml"; then
+    echo 'PASS: canonical bottle uses win64 and GE-Proton 11-1'
+else
+    echo 'FAIL: canonical bottle is not win64 with GE-Proton 11-1' >&2; fail=1
+fi
 check_file "$bottle/drive_c/Games/Kelyje2/RigNRoll.exe" 'Lithuanian game executable exists'
-check_file "$bottle/drive_c/windows/system32/ir50_32.dll" 'Indeo 5 decoder exists'
+check_file "$bottle/drive_c/windows/syswow64/ir50_32.dll" '32-bit Indeo 5 decoder exists in the win64 prefix'
+if strings -el "$bottle/drive_c/windows/syswow64/ir50_32.dll" | grep -Fq 'Video 5.11'; then
+    echo 'PASS: required Ligos Indeo 5.11 VfW decoder is installed'
+else
+    echo 'FAIL: installed Indeo decoder is not Ligos 5.11' >&2; fail=1
+fi
 check_file "$bottle/drive_c/Games/Kelyje2/ddraw.dll" 'D2GI DirectDraw wrapper exists'
 check_file "$bottle/drive_c/Games/Kelyje2/d2gi.ini" 'D2GI dynamic display configuration exists'
-check_file "$bottle/drive_c/Media/Kelyje2.media" 'verified source file is stored inside the bottle'
-if [[ -f $bottle/drive_c/Media/Kelyje2.media ]] &&
-   [[ $(sha256sum "$bottle/drive_c/Media/Kelyje2.media" | awk '{print $1}') == 9b80360c004bb5eb4aab3de6aa27e76b060867a796895de5bc8ce5ec8957b5b1 ]]; then
-    echo 'PASS: bottle-local source checksum matches'
-else
-    echo 'FAIL: bottle-local source checksum mismatch' >&2; fail=1
-fi
 if rg -q $'^home=\.\r?$' "$bottle/drive_c/Games/Kelyje2/truck.ini" &&
    rg -q $'^base=\.\r?$' "$bottle/drive_c/Games/Kelyje2/truck.ini" &&
    rg -q $'^source=\.\r?$' "$bottle/drive_c/Games/Kelyje2/truck.ini"; then
@@ -39,7 +42,7 @@ if rg -q 'WINEDLLOVERRIDES: ir50_32=n,b;ddraw=n,b' "$bottle/bottle.yml"; then
 else
     echo 'FAIL: native Indeo decoder preference is missing' >&2; fail=1
 fi
-if rg -q '"vidc\.iv50"="ir50_32\.dll"' "$bottle/system.reg"; then
+if rg -q '"vidc\.iv50"="(?:C:\\\\windows\\\\syswow64\\\\)?ir50_32\.dll"' "$bottle/system.reg"; then
     echo 'PASS: IV50 is registered to the Indeo decoder'
 else
     echo 'FAIL: IV50 registry mapping is missing' >&2; fail=1

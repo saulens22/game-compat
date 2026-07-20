@@ -60,6 +60,34 @@ def signed_app_id(executable: str, name: str) -> int:
     return value - 0x100000000 if value >= 0x80000000 else value
 
 
+def install_artwork(shortcut_path: Path, app_id: int, artwork_dir: Path | None) -> str:
+    if artwork_dir is None:
+        return ""
+    artwork_dir = artwork_dir.expanduser().resolve()
+    schemes = {
+        "grid": f"{app_id}.png",
+        "portrait": f"{app_id}p.png",
+        "hero": f"{app_id}_hero.png",
+        "logo": f"{app_id}_logo.png",
+        "icon": f"{app_id}_icon.png",
+    }
+    missing = [name for name in schemes if not (artwork_dir / f"{name}.png").is_file()]
+    if missing:
+        raise SystemExit(f"Artwork directory is missing: {', '.join(name + '.png' for name in missing)}")
+    grid_dir = shortcut_path.parent / "grid"
+    grid_dir.mkdir(parents=True, exist_ok=True)
+    for name, destination in schemes.items():
+        shutil.copy2(artwork_dir / f"{name}.png", grid_dir / destination)
+    return str(grid_dir / schemes["icon"])
+
+
+def remove_artwork(shortcut_path: Path, app_ids: set[int]) -> None:
+    grid_dir = shortcut_path.parent / "grid"
+    for app_id in app_ids:
+        for suffix in (".png", "p.png", "_hero.png", "_logo.png", "_icon.png"):
+            (grid_dir / f"{app_id}{suffix}").unlink(missing_ok=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("name")
@@ -67,10 +95,29 @@ def main() -> int:
     parser.add_argument("--account")
     parser.add_argument("--yes", action="store_true", help="allow graceful Steam shutdown")
     parser.add_argument("--no-restart", action="store_true")
+    parser.add_argument("--launch-options", default="")
+    parser.add_argument(
+        "--allow-non-executable",
+        action="store_true",
+        help="allow a regular Windows target whose Unix executable bit is unset",
+    )
+    parser.add_argument(
+        "--replace-name",
+        action="append",
+        default=[],
+        help="remove an obsolete shortcut with this exact name while updating the requested game",
+    )
+    parser.add_argument(
+        "--artwork-dir",
+        type=Path,
+        help="directory containing grid.png, portrait.png, hero.png, logo.png and icon.png",
+    )
     args = parser.parse_args()
 
     target = args.target.expanduser().resolve()
-    if not target.is_file() or not os.access(target, os.X_OK):
+    if not target.is_file() or (
+        not args.allow_non_executable and not os.access(target, os.X_OK)
+    ):
         raise SystemExit(f"Shortcut target is missing or not executable: {target}")
     path = shortcut_file(steam_root(), args.account)
 
@@ -100,18 +147,31 @@ def main() -> int:
     shortcuts = data.setdefault("shortcuts", {})
     quoted_target = f'"{target}"'
     quoted_start = f'"{target.parent}"'
+    app_id_signed = signed_app_id(quoted_target, args.name)
+    app_id_unsigned = app_id_signed & 0xFFFFFFFF
+    icon_path = install_artwork(path, app_id_unsigned, args.artwork_dir)
+    replacement_names = {args.name, *args.replace_name}
+    matching_keys = [
+        key for key, item in shortcuts.items() if item.get("AppName") in replacement_names
+    ]
+    old_app_ids = {shortcuts[key]["appid"] & 0xFFFFFFFF for key in matching_keys}
     existing_key = next(
-        (key for key, item in shortcuts.items() if item.get("AppName") == args.name),
-        str(len(shortcuts)),
+        (key for key in matching_keys if shortcuts[key].get("AppName") == args.name),
+        matching_keys[0] if matching_keys else str(max((int(key) for key in shortcuts), default=-1) + 1),
     )
+    for key in matching_keys:
+        if key != existing_key:
+            del shortcuts[key]
+    removed_app_ids = old_app_ids - {app_id_unsigned}
+    remove_artwork(path, removed_app_ids)
     shortcuts[existing_key] = {
-        "appid": signed_app_id(quoted_target, args.name),
+        "appid": app_id_signed,
         "AppName": args.name,
         "Exe": quoted_target,
         "StartDir": quoted_start,
-        "icon": "",
+        "icon": icon_path,
         "ShortcutPath": "",
-        "LaunchOptions": "",
+        "LaunchOptions": args.launch_options,
         "IsHidden": 0,
         "AllowDesktopConfig": 1,
         "AllowOverlay": 1,
@@ -133,6 +193,9 @@ def main() -> int:
         raise SystemExit("Shortcut verification failed; original database was not replaced")
     os.replace(temporary, path)
     print(f"Steam shortcut ready: {args.name}")
+    print(f"App ID: {app_id_unsigned}")
+    if removed_app_ids:
+        print("Removed App IDs: " + ",".join(str(value) for value in sorted(removed_app_ids)))
     print(f"Backup: {backup}")
 
     if was_running and not args.no_restart:

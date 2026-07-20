@@ -121,6 +121,13 @@ inspection only for Wine surfaces when `kdotool` is unavailable:
   one game's complete launch-options value and keeps a timestamped backup.
 - `set-steam-compat-tool.sh`: while Steam is stopped, changes and verifies only
   the requested App ID's compatibility-tool mapping and keeps a backup.
+- `remove-steam-compat-tool.sh`: while Steam is stopped, removes obsolete
+  non-Steam compatibility mappings with backup and verification.
+- `bottles-game.sh` and `bottles-winetricks.sh`: manage isolated Bottles cases
+  and install verified dependencies with each bottle's selected runner.
+- `add-bottles-steam-shortcut.sh`: optional, case-controlled direct Steam
+  integration for a verified win64 bottle. It keeps one shortcut per game and
+  warns that Bottles and Steam Proton sharing a prefix is brittle.
 - `skills/steam-proton-diagnostic/scripts/game-config-snapshot.sh`: creates verified per-game config snapshots with an
   exact source-path manifest, and can list, diff, verify, or restore them.
 - `skills/steam-proton-diagnostic/scripts/experiment-guard.sh`: checks canonical test signatures against a per-game
