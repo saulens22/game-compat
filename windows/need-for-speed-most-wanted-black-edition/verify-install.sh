@@ -26,6 +26,33 @@ fi
 for file in dinput8.dll scripts/NFSMostWanted.WidescreenFix.asi scripts/NFSMostWanted.WidescreenFix.ini scripts/NFSMostWanted.WidescreenFix.tpk; do
     if [[ -f $game/$file ]]; then echo "PASS: $file"; else echo "FAIL: missing $file" >&2; fail=1; fi
 done
+
+if [[ -f $game/scripts/X360Stuff.asi || -f $game/scripts/NFSMWHDReflections.asi ]]; then
+    for file in \
+        scripts/X360Stuff.asi \
+        scripts/NFSMW_XenonEffects.asi \
+        scripts/TexWizard.asi \
+        scripts/NFSMWHDReflections.asi \
+        scripts/NFSMWHDReflections.ini; do
+        if [[ -f $game/$file ]]; then echo "PASS: $file"; else echo "FAIL: incomplete HD stack: $file" >&2; fail=1; fi
+    done
+    widescreen=$game/scripts/NFSMostWanted.WidescreenFix.ini
+    reflections=$game/scripts/NFSMWHDReflections.ini
+    for expected in 'FixHUD = 0' 'Scaling = 0' 'FMVWidescreenMode = 0' 'WriteSettingsToFile = 0'; do
+        if rg -q "^${expected// /[[:space:]]*}" "$widescreen"; then
+            echo "PASS: $expected"
+        else
+            echo "FAIL: Xbox 360 Stuff requires $expected" >&2; fail=1
+        fi
+    done
+    for expected in 'AutoRes = 1' 'CubemapBrightnessFix = 0' 'RestoreWaterReflections = 1'; do
+        if rg -q "^${expected// /[[:space:]]*}" "$reflections"; then
+            echo "PASS: $expected"
+        else
+            echo "FAIL: HD Reflections requires $expected" >&2; fail=1
+        fi
+    done
+fi
 if find "$game/scripts" -maxdepth 1 -type f -iname 'NFSMW2005_widescreen_fix.asi' | grep -q .; then
     echo 'FAIL: incompatible legacy widescreen ASI is still active' >&2; fail=1
 else

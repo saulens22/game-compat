@@ -1,5 +1,5 @@
 {
-  "current": "v7",
+  "current": "v8",
   "history": [
     {
       "version": "v1",
@@ -28,6 +28,10 @@
     {
       "version": "v7",
       "summary": "Initializes required Proton bookkeeping without copying dependencies, preventing first-launch tracked-files failures while continuing to share the canonical Bottles prefix."
+    },
+    {
+      "version": "v8",
+      "summary": "Adds the player-confirmed Xbox 360 Stuff 4.1 and HD Reflections installer with payload verification, preserves automatic display selection, and documents confirmed Xbox controller support without replacing the player's mapping."
     }
   ]
 }

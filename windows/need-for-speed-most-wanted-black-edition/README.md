@@ -16,7 +16,11 @@ GE-Proton 11-1. New installations use the same architecture and dependency path.
 - GE-Proton 11-1, DXVK 3.0.2 and the DirectX 9 June 2010 helper files.
 - ThirteenAG Widescreen Fix downloaded 2026-07-21.
 - KDE Plasma 6.7.3 on Wayland.
-- Keyboard and mouse. Controller support has not been tested.
+- Keyboard and mouse plus an Xbox controller through Steam Input and the
+  Widescreen Fix's XInput support. The player manually remapped the controls to
+  a preferred modern layout.
+- Xbox 360 Stuff Pack 4.1 Easy Installation and NFS HD Reflections, downloaded
+  and player-confirmed on 2026-07-21.
 
 ## Default behavior
 
@@ -40,6 +44,9 @@ The current confirmed setup provides:
 - optional direct Steam integration using the same win64 prefix;
 - complete Steam library artwork generated from a pinned SteamGridDB cover;
 - Steam Overlay and the FPS counter when the optional Steam path is used.
+- Xbox 360 shaders, lighting, world textures, effects and higher-quality audio;
+- display-sized HD vehicle, road, water and mirror reflections;
+- working Xbox controller input through the existing Widescreen Fix path.
 
 The player confirmed the canonical win64 GE-Proton bottle launches and renders
 at 3840×2160. Direct Steam launch, NT sync, Steam Overlay and the FPS counter
@@ -80,23 +87,37 @@ Your kernel already provides `/dev/ntsync`, and Bottles can access it. The bottl
 is configured for NT sync. Runner output reported `ntsync: up and running`, and
 the player then confirmed the game launch using that configuration.
 
-### Optional HD upgrades
+### Optional Xbox 360 visual and audio upgrade
 
-These are available but are not installed yet:
+[Xbox 360 Stuff Pack 4.1](https://nfsmods.xyz/mod/1200) is the confirmed
+original-style upgrade. It adds the Xbox 360 shaders, lighting, world textures,
+effects, PC bug fixes and higher-quality soundtrack. Use its **Easy
+Installation** archive on Linux: the Complex installer depends on NFS-VltEd,
+whose protected .NET executable failed before opening under GE-Proton, Soda and
+native Mono during this research.
 
-- [Xbox 360 Stuff Pack 4.1](https://nfsmods.xyz/mod/1200) is the preferred
-  original-style graphics upgrade. It adds the Xbox 360 shaders, higher-quality
-  world textures, sky, lighting, effects and audio.
-- [NFS HD Reflections](https://github.com/AeroWidescreen/NFSHDReflections)
-  improves vehicle, road and mirror reflections. It is designed to work with
-  the Widescreen Fix and Xbox 360 Stuff Pack.
-- [Most Wanted HQ 1.20.9](https://www.moddb.com/mods/most-wanted-hq) is a much
-  larger overhaul. It changes cars, lighting and game data and may require a
-  clean profile, so it will remain a separate optional setup.
+[NFS HD Reflections](https://github.com/AeroWidescreen/NFSHDReflections) is
+installed after Xbox 360 Stuff. `AutoRes=1` keeps reflection sizes tied to the
+active display. Xbox 360 Stuff requires `CubemapBrightnessFix=0` and
+`RestoreWaterReflections=1`.
 
-The Xbox 360 pack and HD Reflections will be added after their current downloads,
-checksums, install order and rollback have been tested. This prevents an HD pack
-from breaking the working base setup.
+The pack also requires `FixHUD=0`, `Scaling=0` and `FMVWidescreenMode=0` in the
+current Widescreen Fix. Keep `WriteSettingsToFile=0`: enabling it generated
+`g_RacingResolution=1`, which made the game render in a small corner with
+glitching around it. The normal launcher continues resetting the registry to
+the automatic-resolution sentinel before every start.
+
+[Most Wanted HQ](https://www.moddb.com/mods/most-wanted-hq) is a separate,
+incompatible overhaul that expects a clean game and new profile. Do not layer
+it over this setup.
+
+### Xbox controller
+
+The current Widescreen Fix's `ImproveGamepadSupport=1` path worked with an Xbox
+controller through Steam. The player remapped the controls in game to a more
+modern personal layout. XtendedInput and the separate Original Button Pack were
+researched but not installed because replacing a confirmed working input path
+would risk changing that mapping.
 
 ### Steam artwork
 
@@ -158,7 +179,22 @@ None of the repository scripts accept or copy game installation files.
 ./windows/need-for-speed-most-wanted-black-edition/launch.sh
 ```
 
-### 5. Optionally add it to Steam
+### 5. Optionally install the confirmed Xbox 360 HD pack
+
+Download the **Easy Installation** archive from Xbox 360 Stuff Pack 4.1 and the
+latest NFS HD Reflections archive. Then pass those two mod archives to:
+
+```bash
+./windows/need-for-speed-most-wanted-black-edition/install-hd-pack.sh \
+  "/path/to/Easy Installation.zip" \
+  "/path/to/NFS HD Reflections.zip"
+```
+
+The script verifies every payload file against the tested manifests, installs
+Xbox 360 Stuff first, adds HD Reflections and applies the confirmed compatible
+settings. It does not accept game installation files or touch saves.
+
+### 6. Optionally add it to Steam
 
 ```bash
 ./windows/need-for-speed-most-wanted-black-edition/setup-steam.sh
@@ -205,6 +241,9 @@ the confirmed Bottles setup.
 - Wine 11.13 was also tested and rejected because it fell back to fsync and
   produced additional Wine/EGL errors.
 - No controller layout, save editing or automated gameplay was tested.
+- Xbox controller input was later player-confirmed through Steam and the
+  Widescreen Fix. The player performed a manual modern-layout remap; that
+  personal mapping is not imposed by the installer.
 - Steam's shortcut had `AllowOverlay=1` and the global FPS counter was enabled.
 - Forwarding Steam's current `steamrt32/gameoverlayrenderer.so`, `SteamAppId`,
   `SteamGameId`, and `SteamOverlayGameId` was verified inside `speed.exe`, but
@@ -222,13 +261,27 @@ the confirmed Bottles setup.
   The live `speed.exe` used GE-Proton 11-1, the expected shared prefix and the
   NVIDIA renderer; both Steam overlay libraries were mapped. The player
   confirmed the game, Shift+Tab Overlay and Steam's FPS counter.
+- The Xbox 360 Stuff Complex installer was rejected for Linux after NFS-VltEd
+  failed before opening with the same .NET exception in isolated 32-bit and
+  64-bit Bottles tests. The official Easy Installation payload avoided those
+  Windows-only modding tools.
+- The first Easy Installation run used the pack README's
+  `WriteSettingsToFile=1`. It generated `g_RacingResolution=1`, producing a
+  small corner image and glitched surrounding area. Keeping settings in the
+  registry, while disabling only the three conflicting widescreen HUD options,
+  produced the player-confirmed correct presentation.
+- Xbox 360 Stuff, Xenon Effects, TexWizard, Widescreen Fix, HD Reflections and
+  Steam's 32-bit Overlay library were all verified in the live `speed.exe`.
+- Front-End Shadows was not added because Xbox 360 Stuff already supplies
+  garage/shop dynamic shadows. Recompiled Vinyls, converted movies and UI Texts
+  make broader data or media changes and were not needed for this confirmed
+  result.
 
 ## TODO (not yet fixed)
 
-- Open Video settings and confirm the active display resolution is selected
-  without changing it manually.
-- After the base setup works, install and test Xbox 360 Stuff Pack 4.1 with HD
-  Reflections as a reversible HD option.
+- Test the confirmed stack on a non-16:9 display when one is available.
+- If the player later wants a shareable modern controller preset, capture and
+  document it separately without overwriting Steam's default layout.
 
 ## Game links
 
