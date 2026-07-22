@@ -110,12 +110,16 @@ def refresh_catalog() -> tuple[list[Game], str]:
     try:
         with urllib.request.urlopen(request, timeout=8) as response:
             tree = json.load(response)["tree"]
+        blob_paths = {
+            item["path"] for item in tree if item.get("type") == "blob"
+        }
         paths = sorted(
             item["path"] for item in tree
             if item.get("type") == "blob" and re.fullmatch(
                 r"(?:steam|windows)/[^/]+/README\.md|emulators/(?:frontends/[^/]+|[^/]+)/README\.md",
                 item["path"],
             )
+            and str(Path(item["path"]).parent / "versions.json") in blob_paths
         )
         records = []
         for path in paths:
