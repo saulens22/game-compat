@@ -45,6 +45,15 @@ Resize the window freely. The game summary is the scrollable part of the right
 panel; action buttons and the status message remain visible at the bottom. The
 divider between the game list and details can also be dragged.
 
+The terminal window opened for an action closes after you acknowledge its final
+status; the helper does not deliberately leave background terminals running.
+
+To check catalog discovery without opening a graphical window, run:
+
+```bash
+./game-compat-launcher.py --self-test
+```
+
 ## Available actions
 
 - **Read game page** opens the current published instructions.

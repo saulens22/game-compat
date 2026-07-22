@@ -1,0 +1,14 @@
+# selectors: nba-live-07 nba07
+# curl downloads the checksum-pinned Microsoft redistributable.
+curl
+# cabextract extracts its three updated DirectX setup-engine files.
+cabextract
+# libarchive extracts community fix archives after the player downloads them.
+libarchive
+# file and ripgrep support non-invasive installation verification.
+file
+ripgrep
+# ImageMagick creates all five Steam library artwork sizes from pinned sources.
+imagemagick
+# A 32-bit MinGW-w64 C++ compiler rebuilds the optional controller ASI.
+mingw32-cxx

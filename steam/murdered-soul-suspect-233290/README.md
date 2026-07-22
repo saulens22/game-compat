@@ -7,7 +7,7 @@ so the game can run its own investigation transition.
 
 ## Tested with
 
-- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md), snapshot dated 2026-07-20.
+- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md).
 - Steam edition, build `270764`; verified live executable `Binaries/Win64/Murdered.exe`.
 - GE-Proton11-1 through `Proton-GE Latest`, DXVK D3D11, KDE Wayland, and normal desktop Steam.
 - Stock Steam launch options and the default Xbox-controller configuration.

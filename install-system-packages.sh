@@ -157,7 +157,11 @@ map_capability() {
         arch:libarchive) echo libarchive ;;
         ubuntu:libarchive) echo libarchive-tools ;;
         fedora:libarchive) echo bsdtar ;;
+        arch:cabextract|ubuntu:cabextract|fedora:cabextract) echo cabextract ;;
         arch:ripgrep|ubuntu:ripgrep|fedora:ripgrep) echo ripgrep ;;
+        arch:mingw32-cxx) echo mingw-w64-gcc ;;
+        ubuntu:mingw32-cxx) echo g++-mingw-w64-i686 ;;
+        fedora:mingw32-cxx) echo mingw32-gcc-c++ ;;
         *) echo "No $distro package mapping for capability: $1" >&2; return 1 ;;
     esac
 }

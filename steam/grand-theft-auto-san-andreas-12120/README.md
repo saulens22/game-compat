@@ -5,7 +5,7 @@ Proton.
 
 ## Tested with
 
-- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md), captured 2026-07-20.
+- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md).
 - Compatibility tool: Proton-GE Latest, reported build `GE-Proton11-1`.
 - Game edition: NewSteam executable, App ID `12120`.
 - Controller mapping: Steam's built-in default gamepad layout.

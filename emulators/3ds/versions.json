@@ -1,0 +1,9 @@
+{
+  "current": "v1",
+  "history": [
+    {
+      "version": "v1",
+      "summary": "Documents the initialized Panda3DS RetroArch core and the standalone Azahar fallback pending a real game test."
+    }
+  ]
+}

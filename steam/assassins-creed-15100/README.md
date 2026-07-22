@@ -6,7 +6,7 @@ engine from running hundreds of frames per second.
 
 ## Tested with
 
-- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md), snapshot dated 2026-07-20.
+- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md).
 - Steam Director's Cut edition, build `252091`; live executable `AssassinsCreed_Dx10.exe`.
 - Exact supported DX10 MD5 `ca87753255e2d14b1f18bb737c643792` and DX9 MD5 `8e72c3333743780e43bc2c34bbf625f9`.
 - `Proton-GE Latest`, resolving to `GE-Proton11-1`.

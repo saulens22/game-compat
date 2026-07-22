@@ -4,7 +4,7 @@ Steam App ID `12110` on Linux through Proton.
 
 ## Tested with
 
-- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md), captured 2026-07-20.
+- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md).
 - Compatibility tool: Proton-GE Latest, reported build `GE-Proton11-1`.
 - Game edition: classic Steam release, App ID `12110`.
 - Controller mapping: Steam's built-in layout.

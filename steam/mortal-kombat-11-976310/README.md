@@ -4,7 +4,7 @@ Steam App ID `976310` through Proton.
 
 ## Tested with
 
-- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md), captured 2026-07-20.
+- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md).
 - Compatibility tools compared: GE-Proton 9-11, GE-Proton 10-34, Proton-GE Latest `GE-Proton11-1`, and Proton Experimental.
 - Renderers compared: the live `MK11.exe` DX11 path and `MK11_DX12.exe` DX12 path.
 - GPU evidence: NVIDIA RTX 4060 Laptop GPU selected, with low utilization during the failure.

@@ -1,5 +1,5 @@
 {
-  "current": "v8",
+  "current": "v9",
   "history": [
     {
       "version": "v1",
@@ -32,6 +32,10 @@
     {
       "version": "v8",
       "summary": "Adds the player-confirmed Xbox 360 Stuff 4.1 and HD Reflections installer with payload verification, preserves automatic display selection, and documents confirmed Xbox controller support without replacing the player's mapping."
+    },
+    {
+      "version": "v9",
+      "summary": "Prevents stale Steam Running state by replacing the pre-launch Bottles registry command with a bounded offline registry edit that cannot leave Wine services behind."
     }
   ]
 }

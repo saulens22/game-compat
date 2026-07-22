@@ -127,7 +127,12 @@ inspection only for Wine surfaces when `kdotool` is unavailable:
   and install verified dependencies with each bottle's selected runner.
 - `add-bottles-steam-shortcut.sh`: optional, case-controlled direct Steam
   integration for a verified win64 bottle. It keeps one shortcut per game and
-  warns that Bottles and Steam Proton sharing a prefix is brittle.
+  warns that Bottles and Steam Proton sharing a prefix is brittle. Pre-launch
+  helpers are time-bounded and may not start Bottles, Wine, Proton or Steam, so
+  helper services cannot leave a shortcut permanently marked Running.
+- `wine-reg-set-dword.sh`: makes one locked DWORD change in an inactive Bottles
+  Flatpak prefix without starting Wine; intended for safe, bounded pre-launch
+  preparation when a game rewrites a display or compatibility setting on exit.
 - `skills/steam-proton-diagnostic/scripts/game-config-snapshot.sh`: creates verified per-game config snapshots with an
   exact source-path manifest, and can list, diff, verify, or restore them.
 - `skills/steam-proton-diagnostic/scripts/experiment-guard.sh`: checks canonical test signatures against a per-game

@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path
 
 
-DOWNLOAD_SUFFIXES = {".sh", ".py", ".c", ".conf"}
+DOWNLOAD_SUFFIXES = {".sh", ".py", ".c", ".cpp", ".conf", ".asi"}
 
 HELP = {
     "setup-steam.sh": ("Configure Steam launch", "Adds or updates this case's documented Steam integration; read the case page to see whether Steam is optional."),
@@ -38,6 +38,15 @@ HELP = {
     "summarize-diagnostic.sh": ("Summarize a diagnostic", "Produces a concise summary from a completed diagnostic directory."),
     "controller-skip.c": ("Controller intro helper source", "C source used by build-controller-skip.sh; it is not run directly."),
     "mpv-intro-input.conf": ("Intro player input configuration", "Input bindings consumed by the intro wrapper; keep it beside the scripts."),
+    "fix-installer-directx.sh": ("Repair the NBA Live 07 installer", "Replaces only the obsolete DirectX setup engine after preserving and verifying its original files."),
+    "configure-runtime.sh": ("Configure the NBA Live 07 runtime", "Installs the documented runtime components through Bottles Winetricks and repairs runner-matched WineD3D support files."),
+    "fix-clean-exit.sh": ("Repair NBA Live 07 shutdown", "Applies or rolls back the checksum-guarded branch patch that lets the confirmed executable terminate cleanly."),
+    "install-widescreen.sh": ("Install the experimental NBA resolution plugin", "Installs the documented ASI loader and resolution plugin; the case page explains why the present widescreen result is not accepted."),
+    "apply-official-update.sh": ("Apply the NBA Live 07 update", "Applies a player-supplied matching official update after checking the installed edition and preserving rollback data."),
+    "build.sh": ("Build the NBA controller fallback", "Reproducibly compiles the included controller-profile fallback source for the supported 32-bit executable."),
+    "install.sh": ("Install the NBA controller fallback", "Verifies the executable and plugin hashes, then installs, inspects, or rolls back the native controller-profile fallback."),
+    "nba_controller_profile_fallback.cpp": ("NBA controller fallback source", "Auditable C++ source for the profile fallback used by modern Xbox-family controllers."),
+    "NBAControllerProfileFallback-v2.asi": ("NBA controller fallback binary", "Reproducibly built 32-bit ASI tested with the executable hash documented on the NBA Live 07 page."),
     "requirements.txt": ("System requirements", "Portable capability list consumed by the repository's system-package installer."),
 }
 
@@ -136,6 +145,10 @@ def make_bundle(
     destination = docs / "downloads" / case.relative_to(root) / f"{case.name}-scripts.zip"
     destination.parent.mkdir(parents=True, exist_ok=True)
     bundle_sources = set(sources)
+    bundle_sources.update(
+        path for path in tracked
+        if case in path.parents and path.name != "AGENTS.md"
+    )
     bundle_sources.update(root / relative for relative in BUNDLE_SHARED)
     bundle_sources.update(
         path for path in (
@@ -211,7 +224,12 @@ def main() -> None:
         upstream_file = case / "upstream.json"
         upstream = json.loads(upstream_file.read_text(encoding="utf-8")) if upstream_file in tracked else []
         downloads = sorted(
-            (path for path in tracked if path.parent == case and path.suffix in DOWNLOAD_SUFFIXES),
+            (
+                path for path in tracked
+                if case in path.parents
+                and path.suffix in DOWNLOAD_SUFFIXES
+                and path.name != "AGENTS.md"
+            ),
             key=lambda path: (ACTION_ORDER.get(path.name, 10), path.name),
         )
         downloads.append(requirements)
@@ -258,7 +276,7 @@ def main() -> None:
         for source in downloads:
             destination = copy_download(source, root, docs)
             link = destination.relative_to(docs)
-            action_title, description = HELP.get(source.name, (source.name, "Supporting file used by this case's scripts."))
+            action_title, description = HELP.get(source.name, (source.name, "Supporting file used by this case's documented setup or reproducible build."))
             lines.extend([f"#### {action_title}", "", description, ""])
             lines.extend([f"[Download {source.name}]({link.as_posix()}){{: download }}", ""])
         lines.extend(["", "## Game or frontend links", ""])

@@ -1,0 +1,9 @@
+{
+  "current": "v1",
+  "history": [
+    {
+      "version": "v1",
+      "summary": "Adds portable fullscreen Ryujinx launchers for Pokemon Scarlet and Violet, safe Steam shortcut installers, and the initial Vulkan performance findings."
+    }
+  ]
+}

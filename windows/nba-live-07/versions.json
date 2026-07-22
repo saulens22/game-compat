@@ -1,0 +1,25 @@
+{
+  "current": "v5",
+  "history": [
+    {
+      "version": "v1",
+      "summary": "Adds the reproducible win64 Bottles setup and the confirmed installer DirectX engine repair, with launch, verification and research documentation."
+    },
+    {
+      "version": "v2",
+      "summary": "Adds the confirmed GE-Proton runtime repair, restores runner-matched WineD3D support files, registers one clean Bottles launcher and documents the fixed-executable startup result."
+    },
+    {
+      "version": "v3",
+      "summary": "Makes the launcher follow the real game process and clean up this bottle's lingering Wine desktop so launchers do not remain stuck after exit."
+    },
+    {
+      "version": "v4",
+      "summary": "Adds a checksum-guarded, reversible executable patch that fixes the verified NBA Live 07 shutdown deadlock so Steam clears normally after menu exit."
+    },
+    {
+      "version": "v5",
+      "summary": "Adds the confirmed native controller-profile fallback with source and reproducible binary, documents the complete dual-stick control scheme and special moves, and adds complete Steam library artwork setup."
+    }
+  ]
+}

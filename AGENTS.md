@@ -23,6 +23,10 @@
 
 ## Published case documentation
 
+- Do not publish our research-session, verification, download, capture, or
+  environment-snapshot dates. Keep those timestamps only in ignored local
+  evidence. Upstream game, package, fix, source-release, and commit dates are
+  useful release identifiers and should remain in public documentation.
 - Write each game `README.md` for a player, not for an agent. Put operational
   instructions for Codex or other agents in that case's `AGENTS.md`.
 - Every game README must contain these sections in this order:

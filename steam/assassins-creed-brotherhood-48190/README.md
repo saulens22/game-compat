@@ -5,7 +5,7 @@ maximum graphics without motion blur, and a reliable 60 FPS safety cap.
 
 ## Tested with
 
-- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md), snapshot dated 2026-07-20.
+- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md).
 - Steam edition; live executable `ACBSP.exe` through DXVK D3D9.
 - Proton Experimental; GE-Proton11-1 was also tested and rejected for this build.
 - KDE Wayland and normal Steam; Big Picture Mode was not assumed.

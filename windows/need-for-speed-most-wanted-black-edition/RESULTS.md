@@ -4,6 +4,9 @@
 - ThirteenAG's current Widescreen Fix is installed and its ASI loader is enabled with `dinput8=n,b`.
 - The launcher requests the current display resolution instead of hard-coding a resolution.
 - The optional direct Steam shortcut has complete artwork and is player-confirmed with Steam Overlay and the FPS counter. The ordinary Bottles Flatpak wrapper still cannot provide Overlay, matching Valve issue #8952.
+- Steam launch preparation uses a bounded offline registry edit rather than a
+  Bottles/Wine command. A normal player exit was verified to release every
+  Steam-tracked process, so the shortcut no longer remains marked **Running**.
 - An early research-only direct Steam GE-Proton test failed because its pure win32 prefix was incompatible with current Proton. It is not part of the published installation path.
 - The published setup creates `nfsmw-black-edition` as win64 from the start and freshly installs `d3dx9` and `d3dcompiler_47`. No win32 installation or migration is required. Optional Steam Proton sharing of that prefix is confirmed but explicitly documented as brittle.
 - Xbox 360 Stuff Pack 4.1 Easy Installation and NFS HD Reflections are installed

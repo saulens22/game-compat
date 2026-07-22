@@ -1,7 +1,6 @@
 # GTA classic trilogy: fixes, reverse-engineering projects, and 4K options
 
-Research snapshot: 2026-07-20. Verify upstream versions before relying on this
-document for a new installation.
+Verify upstream versions before relying on this document for a new installation.
 
 ## Executive conclusion
 
@@ -57,7 +56,7 @@ and its [README](https://git.shihaam.dev/archivemirrors/re3/src/branch/master/RE
 
 ## What `gta-reversed` for San Andreas is
 
-`gta-reversed` is active: GitHub reported a latest source commit of
+`gta-reversed` is active: GitHub reported source commit
 `155c20f8cbe1cc30382f8f16c51e8fe25988ee36` dated 2026-07-13. However, it is
 not a San Andreas equivalent of the finished `re3` executable.
 

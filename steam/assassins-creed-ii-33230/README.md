@@ -5,7 +5,7 @@ the stable high-resolution improvements from EaglePatch.
 
 ## Tested with
 
-- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md), snapshot dated 2026-07-20.
+- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md).
 - Steam edition, build `1843459`; live executable `AssassinsCreedIIGame.exe`, SHA-256 `a4ba454b0e2a9190a42db631574b694cc0dbdcec750106c1b0364b70a6e4d17e`.
 - `Proton-GE Latest`, resolving to `GE-Proton11-1`, with DXVK and the current Ubisoft Connect bootstrap.
 - KDE Wayland and normal Steam; Big Picture Mode was not used.

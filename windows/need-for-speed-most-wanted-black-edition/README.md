@@ -8,19 +8,19 @@ GE-Proton 11-1. New installations use the same architecture and dependency path.
 
 ## Tested with
 
-- Shared computer and Linux packages: [tested environment](../../TESTED_ENVIRONMENT.md), captured 2026-07-20.
+- Shared computer and Linux packages: [tested environment](../../TESTED_ENVIRONMENT.md).
 - English Black Edition 1.3.
 - `speed.exe` SHA-256: `80774c2e5d619b4f120b48d4462896fd504c263399d203a238769cffde1d253c`.
 - Bottles Flatpak 64.1 with a fresh `nfsmw-black-edition` win64 bottle,
-  confirmed working at 3840×2160 on 2026-07-21.
+  confirmed working at 3840×2160.
 - GE-Proton 11-1, DXVK 3.0.2 and the DirectX 9 June 2010 helper files.
-- ThirteenAG Widescreen Fix downloaded 2026-07-21.
+- ThirteenAG Widescreen Fix.
 - KDE Plasma 6.7.3 on Wayland.
 - Keyboard and mouse plus an Xbox controller through Steam Input and the
   Widescreen Fix's XInput support. The player manually remapped the controls to
   a preferred modern layout.
-- Xbox 360 Stuff Pack 4.1 Easy Installation and NFS HD Reflections, downloaded
-  and player-confirmed on 2026-07-21.
+- Xbox 360 Stuff Pack 4.1 Easy Installation and NFS HD Reflections,
+  player-confirmed.
 
 ## Default behavior
 
@@ -52,6 +52,11 @@ The player confirmed the canonical win64 GE-Proton bottle launches and renders
 at 3840×2160. Direct Steam launch, NT sync, Steam Overlay and the FPS counter
 were then confirmed separately.
 
+The original Steam pre-launch helper used Bottles' registry command. In live
+use, that command left Wine service processes behind after `speed.exe` exited,
+so Steam kept the shortcut marked **Running**. Version 9 replaces it with a
+locked offline `user.reg` edit and adds a ten-second preparation timeout.
+
 ## Fixes required to reach it
 
 ### Current widescreen support
@@ -71,6 +76,10 @@ Wine is configured with `dinput8=n,b` so the game's local ASI loader is used.
 The launcher asks the Widescreen Fix to use the current desktop resolution
 every time the game starts. It does not assume 4K, 1080p, 16:9 or any particular
 monitor, so connecting a different display does not require editing the script.
+
+The resolution sentinel is written with the shared offline registry helper.
+It refuses to edit a running prefix, creates `user.reg.game-compat.bak`, and
+does not start Wine services that could outlive the game.
 
 Some old menu artwork and videos may still have black bars because those assets
 were made for 4:3. The rendered game itself should use the full display.
@@ -140,6 +149,12 @@ Proton can update prefix metadata. Snapshot the bottle before changing either
 runner. The Steam helper also resets the Widescreen Fix resolution sentinel
 before every launch so changing monitors does not retain an obsolete resolution.
 
+The pre-launch step is intentionally a short host-side file edit. It never
+starts Bottles, Wine or Proton. Steam tracks the complete launch command, so a
+Wine process started by this step could survive `speed.exe` and leave the game
+permanently marked **Running**. The helper refuses to edit an active prefix and
+Steam limits it to ten seconds.
+
 ## Quick commands
 
 ### 1. Create the bottle
@@ -205,6 +220,33 @@ closing Steam, removes obsolete NFSMW/test entries so one shortcut remains,
 backs up Steam's database, adds complete artwork, pins Proton-GE Latest and
 restarts Steam normally. It does not start Big Picture Mode.
 
+After Steam reopens, launch **Need for Speed: Most Wanted Black Edition** from
+the Library. The confirmed path starts `speed.exe` directly through Steam
+Proton, attaches Steam Overlay and uses the same bottle as the normal launcher.
+Exiting the game normally must clear Steam's **Running** state.
+
+Do not run the Bottles launcher and Steam shortcut at the same time. Before
+changing the Bottles runner or Steam compatibility tool, close the game and
+snapshot the shared bottle:
+
+```bash
+mkdir -p "$HOME/.local/share/game-compat/snapshots"
+./bottles-game.sh snapshot nfsmw-black-edition \
+  "$HOME/.local/share/game-compat/snapshots/nfsmw-black-edition.tar.zst"
+```
+
+If the game has closed but Steam still shows it as running, first confirm that
+`speed.exe` is absent, then stop only this bottle:
+
+```bash
+pgrep -ax speed.exe || true
+./bottles-game.sh stop nfsmw-black-edition
+```
+
+The stop command warns before terminating Wine processes and asks for
+confirmation. Do not kill or restart the whole Steam client as the first
+recovery step.
+
 ### Restore the old widescreen files
 
 Close the game first, then run:
@@ -217,15 +259,18 @@ Use `--yes` only when intentionally skipping the confirmation prompt.
 
 ## Steam launch options
 
-The optional direct shortcut uses this complete launch-options line. The setup
-script expands both paths for the current user:
+`setup-steam.sh` writes the setting automatically; users normally should not
+paste or modify it. For inspection or manual recovery, this is the complete
+portable replacement line. Replace `/path/to/game-compat` with the repository
+location; the setup script performs that expansion itself:
 
 ```bash
-"/path/to/game-compat/windows/need-for-speed-most-wanted-black-edition/prepare-steam-launch.sh" && STEAM_COMPAT_DATA_PATH="$HOME/.local/share/game-compat/steam-compat/nfsmw-black-edition" %command%
+timeout --foreground --signal=TERM --kill-after=2s 10s "/path/to/game-compat/windows/need-for-speed-most-wanted-black-edition/prepare-steam-launch.sh" && STEAM_COMPAT_DATA_PATH="$HOME/.local/share/game-compat/steam-compat/nfsmw-black-edition" %command%
 ```
 
 Users who do not want Steam should launch `launch.sh`; Steam is not required for
-the confirmed Bottles setup.
+the confirmed Bottles setup. Do not combine this line with old Bottles, Wine,
+registry, Overlay-preload or test launch options.
 
 ## Notes for research
 
@@ -272,6 +317,18 @@ the confirmed Bottles setup.
   produced the player-confirmed correct presentation.
 - Xbox 360 Stuff, Xenon Effects, TexWizard, Widescreen Fix, HD Reflections and
   Steam's 32-bit Overlay library were all verified in the live `speed.exe`.
+- A later session exposed a wrapper-lifetime bug: `speed.exe` had exited, but
+  Bottles registry setup left `services.exe` and `winedevice.exe` alive for
+  roughly fifteen hours. Steam tracked the enclosing launch shell and therefore
+  kept the game marked Running. Bottle-scoped `wineboot -k` plus `SIGTERM` to
+  the two stale launch roots cleared it without restarting Steam. The unsafe
+  Wine-based preparation path was removed rather than merely documenting the
+  recovery.
+- The replacement was then tested through the actual Steam non-Steam shortcut.
+  `speed.exe` remained running, Steam attached its Overlay, and
+  no registry-preparation process remained. After the player exited normally,
+  Steam removed every tracked process and the launch root exited with status
+  zero; the shortcut no longer remained marked Running.
 - Front-End Shadows was not added because Xbox 360 Stuff already supplies
   garage/shop dynamic shadows. Recompiled Vinyls, converted movies and UI Texts
   make broader data or media changes and were not needed for this confirmed

@@ -1,6 +1,6 @@
 # Tested environment
 
-Public hardware and package snapshot captured on 2026-07-20. It describes the
+This public hardware and package snapshot describes the
 machine used for these cases without publishing account names, serial numbers,
 home paths, or display-specific assumptions. Individual game pages list the
 compatibility builds and variants actually exercised for that game.

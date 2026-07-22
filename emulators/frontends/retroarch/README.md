@@ -8,6 +8,10 @@ Steam App ID `1118310`, using the native Linux Steam build and Steam Input.
 - RetroArch `1.22.2`, Steam build ID `20833747`.
 - Native Steam client on KDE Wayland; Big Picture was also tested but is optional.
 - Controller navigation verified through Steam Input with SDL2 input.
+- Live verification: Steam Runtime launch succeeded, the Steam
+  Overlay library was loaded, and Radical Red ran through managed mGBA at 60 FPS.
+- Panda3DS core `0.9.3a9f08a` loaded successfully; no local 3DS title was
+  available for a game-compatibility test.
 
 ## Default behavior
 
@@ -32,6 +36,8 @@ Steam App ID `1118310`, using the native Linux Steam build and Steam Input.
   both the D-pad and left stick control the emulated D-pad.
 - Current official Libretro nightlies provide mGBA, SameBoy, Mesen, Snes9x,
   bsnes, Beetle PSX HW, and experimental Panda3DS.
+- The Panda3DS core itself loads inside the Steam Runtime. This confirms its
+  binary dependencies, but does not establish compatibility with any 3DS game.
 
 ## Fixes required to reach it
 
@@ -113,8 +119,9 @@ read/write mount allows RetroArch to update saves, states, playlists, and cores.
 
 ## TODO (not yet fixed)
 
-- Test one local title per configured system.
+- Test one local title per configured system; the managed GBA/mGBA path now has
+  a successful live test.
 - Tune per-core aspect ratio, latency, shader, and controller overrides only
   after baseline compatibility is confirmed.
-- Evaluate Panda3DS with local 3DS files and document incompatibilities; add an
-  Azahar Steam entry if the Libretro core is not adequate.
+- Evaluate Panda3DS with a local 3DS title; only core loading has been verified.
+  Add an Azahar Steam entry if the Libretro core is not adequate.

@@ -6,7 +6,7 @@ motion blur without adding a frame limiter or wrapper.
 
 ## Tested with
 
-- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md), snapshot dated 2026-07-20.
+- Environment: [shared tested environment](../../TESTED_ENVIRONMENT.md).
 - Steam standalone edition, build `11262618`; live `ACFC.exe` through DXVK D3D11.
 - GE-Proton11-1 via the `Proton-GE Latest` compatibility-tool mapping.
 - KDE Wayland and normal desktop Steam; Big Picture Mode was not assumed.

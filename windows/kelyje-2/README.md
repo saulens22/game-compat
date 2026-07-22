@@ -5,7 +5,7 @@ isolated Bottles bottle. Controller support was intentionally not investigated.
 
 ## Tested with
 
-- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md), captured 2026-07-20.
+- Shared hardware and packages: [tested environment](../../TESTED_ENVIRONMENT.md).
 - `RigNRoll.exe` version 7.3 dated 2001, SHA-256 `b7deb5fca7c4f2ab0eb8e02c3aae441eed13e3c4bb53797afd2df35f0721cc28`.
 - Bottles Flatpak 64.1, dedicated win64 `kelyje-2` gaming bottle and GE-Proton
   11-1 runner.

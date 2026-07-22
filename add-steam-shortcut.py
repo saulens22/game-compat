@@ -194,6 +194,11 @@ def main() -> int:
     os.replace(temporary, path)
     print(f"Steam shortcut ready: {args.name}")
     print(f"App ID: {app_id_unsigned}")
+    # Steam stores the 32-bit CRC-derived ID in shortcuts.vdf and compatibility
+    # mappings, but steam://rungameid and command-line launches require the
+    # corresponding 64-bit non-Steam game ID.
+    launch_id = (app_id_unsigned << 32) | 0x02000000
+    print(f"Launch ID: {launch_id}")
     if removed_app_ids:
         print("Removed App IDs: " + ",".join(str(value) for value in sorted(removed_app_ids)))
     print(f"Backup: {backup}")

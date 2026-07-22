@@ -63,6 +63,31 @@ Each case should contain:
 Keep prefixes, logs, captures, configuration snapshots, downloaded installers,
 and other machine-specific state in the standard ignored directories.
 
+### Steam wrapper lifetime
+
+Steam tracks the complete non-Steam launch command, not only the visible game
+window. A pre-launch helper that starts Bottles, Wine, Proton or Steam can leave
+service processes behind after the game exits; Steam will then continue showing
+the game as **Running**.
+
+Apply persistent prefix changes during setup whenever possible. If a small
+per-launch registry value must change, use `wine-reg-set-dword.sh` while the
+bottle is inactive. It edits Bottles' plain-text `user.reg` under a file lock,
+keeps a rollback copy beside it, refuses an active prefix and starts no Wine
+process. `add-bottles-steam-shortcut.sh` rejects unsafe preparation scripts and
+bounds approved helpers to ten seconds.
+
+To recover a stale game, first confirm that its real executable has exited, then
+stop only that game's bottle:
+
+```bash
+./bottles-game.sh stop game-slug
+```
+
+Do not restart or kill all of Steam as the first response. Identify the tracked
+wrapper and bottle processes, stop the named bottle, and terminate only the stale
+per-game launch root if it remains.
+
 The shared `windows/requirements.txt` manifest installs only safe user-space
 NRG-to-ISO conversion and ISO inspection tools. It deliberately does not install
 CDEmu or VHBA: VHBA is coupled to the running kernel and a generic dependency

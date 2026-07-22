@@ -138,13 +138,17 @@ case $command in
         [[ $# -ge 2 ]] || { usage >&2; exit 2; }
         bottle=$1; program=$2; shift 2
         valid_bottle "$bottle"
-        "${cli[@]}" run -b "$bottle" -p "$program" --args-replace "$@"
+        args=(run -b "$bottle" -p "$program")
+        (($# == 0)) || args+=(--args-replace "$@")
+        "${cli[@]}" "${args[@]}"
         ;;
     run-exe)
         [[ $# -ge 2 ]] || { usage >&2; exit 2; }
         bottle=$1; exe=$2; shift 2
         valid_bottle "$bottle"
-        "${cli[@]}" run -b "$bottle" -e "$exe" --args-replace "$@"
+        args=(run -b "$bottle" -e "$exe")
+        (($# == 0)) || args+=(--args-replace "$@")
+        "${cli[@]}" "${args[@]}"
         ;;
     stop)
         [[ $# -ge 1 && $# -le 2 ]] || { usage >&2; exit 2; }

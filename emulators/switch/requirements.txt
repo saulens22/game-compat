@@ -1,0 +1,2 @@
+curl        # Downloads checksum-pinned Steam artwork from the official Nintendo CDN.
+imagemagick # Generates Steam grid, portrait, hero, logo and icon images.

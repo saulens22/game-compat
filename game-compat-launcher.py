@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import shlex
 import shutil
@@ -171,7 +172,7 @@ def terminal_command(command: list[str]) -> list[str] | None:
         "read -r -p 'Press Enter to close this window...'; exit \"$status\""
     )
     choices = (
-        ("konsole", ["konsole", "--noclose", "-e", "bash", "-lc", script]),
+        ("konsole", ["konsole", "-e", "bash", "-lc", script]),
         ("kgx", ["kgx", "--", "bash", "-lc", script]),
         ("gnome-terminal", ["gnome-terminal", "--", "bash", "-lc", script]),
         ("xfce4-terminal", ["xfce4-terminal", "--hold", "-e", f"bash -lc {shlex.quote(script)}"]),
@@ -347,8 +348,40 @@ class Launcher(tk.Tk):
             webbrowser.open(f"{PAGES}/{self.selected.case.name}/#script-versions")
 
 
+def self_test() -> int:
+    games = discover_local_games()
+    errors: list[str] = []
+    if not games:
+        errors.append("no local game cases were discovered")
+    selectors: set[str] = set()
+    for game in games:
+        if game.selector in selectors:
+            errors.append(f"duplicate selector: {game.selector}")
+        selectors.add(game.selector)
+        if section(game.readme, "Tested with") == "Not documented.":
+            errors.append(f"missing Tested with section: {game.selector}")
+        if section(game.readme, "Final behavior") == "Not documented.":
+            errors.append(f"missing Final behavior section: {game.selector}")
+        if section(game.readme, "TODO (not yet fixed)") == "Not documented.":
+            errors.append(f"missing TODO section: {game.selector}")
+        if game.version == "unversioned":
+            errors.append(f"missing or invalid versions.json: {game.selector}")
+    if errors:
+        print("Launcher self-test failed:", file=sys.stderr)
+        for error in errors:
+            print(f"- {error}", file=sys.stderr)
+        return 1
+    print(f"Launcher self-test passed for {len(games)} local cases.")
+    return 0
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--self-test", action="store_true", help="validate local catalog discovery without opening a window")
+    args = parser.parse_args()
     if not (ROOT / "steam").is_dir():
         print("Run this launcher from an extracted game-compat bundle or repository clone.", file=sys.stderr)
         raise SystemExit(1)
+    if args.self_test:
+        raise SystemExit(self_test())
     Launcher().mainloop()

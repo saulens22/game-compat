@@ -13,6 +13,7 @@ Options:
   --artwork-dir DIR      Steam artwork accepted by add-steam-shortcut.py
   --prepare-script FILE  host helper to run before Steam Proton starts the game
   --dll-overrides VALUE  Wine DLL overrides required by game-local fixes
+  --env NAME=VALUE       add a launch environment variable; repeatable
   --replace-name NAME    remove an obsolete exact shortcut name; repeatable
   --yes                  allow add-steam-shortcut.py to close Steam
   --no-restart           leave Steam stopped afterward
@@ -30,11 +31,19 @@ dll_overrides=''
 yes=0
 restart=1
 replace_names=()
+launch_env=()
 while [[ ${1:-} == --* ]]; do
     case $1 in
         --artwork-dir) [[ $# -ge 2 ]] || { usage >&2; exit 2; }; artwork=$2; shift 2 ;;
         --prepare-script) [[ $# -ge 2 ]] || { usage >&2; exit 2; }; prepare=$2; shift 2 ;;
         --dll-overrides) [[ $# -ge 2 ]] || { usage >&2; exit 2; }; dll_overrides=$2; shift 2 ;;
+        --env)
+            [[ $# -ge 2 && $2 =~ ^[A-Za-z_][A-Za-z0-9_]*=[^$'\n']*$ ]] || {
+                echo '--env requires NAME=VALUE without a newline.' >&2; exit 2;
+            }
+            launch_env+=("$2")
+            shift 2
+            ;;
         --replace-name) [[ $# -ge 2 ]] || { usage >&2; exit 2; }; replace_names+=("$2"); shift 2 ;;
         --yes) yes=1; shift ;;
         --no-restart) restart=0; shift ;;
@@ -74,10 +83,25 @@ if [[ -n $dll_overrides ]]; then
     }
     launch_options="WINEDLLOVERRIDES=\"$dll_overrides\" $launch_options"
 fi
+for ((i=${#launch_env[@]}-1; i>=0; i--)); do
+    name=${launch_env[i]%%=*}
+    value=${launch_env[i]#*=}
+    [[ $value != *'"'* ]] || { echo "Environment value for $name may not contain quotes." >&2; exit 2; }
+    launch_options="$name=\"$value\" $launch_options"
+done
 if [[ -n $prepare ]]; then
     prepare=$(realpath -e -- "$prepare")
     [[ -x $prepare ]] || { echo "Prepare script is not executable: $prepare" >&2; exit 1; }
-    launch_options="\"$prepare\" && $launch_options"
+    if sed '/^[[:space:]]*#/d' "$prepare" | rg -n -i \
+        'bottles-cli|bottles-game\.sh|flatpak[[:space:]]+run|(^|[[:space:]])wine(boot|server|64)?([[:space:]]|$)|/proton([[:space:]]|$)|steam[[:space:]]+-' \
+        -; then
+        echo 'Preparation scripts may not start Bottles, Wine, Proton or Steam.' >&2
+        echo 'Make persistent prefix changes during setup or use an offline file editor.' >&2
+        exit 1
+    fi
+    # Steam tracks the entire shell command. Bound preparation so a broken
+    # helper cannot leave the shortcut permanently marked Running.
+    launch_options="timeout --foreground --signal=TERM --kill-after=2s 10s \"$prepare\" && $launch_options"
 fi
 
 was_running=0
@@ -90,6 +114,8 @@ output=$("$root/run-python-tool.sh" add-steam-shortcut.py "${args[@]}")
 printf '%s\n' "$output"
 app_id=$(sed -n 's/^App ID: //p' <<<"$output")
 [[ $app_id =~ ^[0-9]+$ ]] || { echo 'Shortcut was not created; no App ID was returned.' >&2; exit 1; }
+launch_id=$(sed -n 's/^Launch ID: //p' <<<"$output")
+[[ $launch_id =~ ^[0-9]+$ ]] || { echo 'Shortcut was not created; no non-Steam Launch ID was returned.' >&2; exit 1; }
 
 # A pre-launch helper can run before Proton gets its first chance to initialize
 # this directory. Generate Proton's own metadata in a disposable empty prefix,
@@ -133,4 +159,5 @@ if (( was_running && restart )); then
     systemd-run --user --unit="$unit" --collect steam -silent >/dev/null
 fi
 printf 'Steam launch options:\n%s\n' "$launch_options"
+printf 'Steam command-line launch:\nsteam steam://rungameid/%s\n' "$launch_id"
 printf 'WARNING: Bottles and Steam Proton share this prefix. Snapshot before runner changes.\n'
