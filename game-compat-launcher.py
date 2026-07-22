@@ -383,7 +383,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--self-test", action="store_true", help="validate local catalog discovery without opening a window")
     args = parser.parse_args()
-    if not (ROOT / "steam").is_dir():
+    if not any((ROOT / name).is_dir() for name in ("steam", "windows", "emulators")):
         print("Run this launcher from an extracted game-compat bundle or repository clone.", file=sys.stderr)
         raise SystemExit(1)
     if args.self_test:
